@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Portfolio</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --accent: #f093fb;
+            --dark: #2d3748;
+            --light: #f7fafc;
+            --text: #2d3748;
+            --text-light: #718096;
+            --white: #ffffff;
+            --gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            --gradient-accent: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><radialGradient id="a"><stop offset="0%" stop-color="%23ffffff" stop-opacity="0.1"/><stop offset="100%" stop-color="%23ffffff" stop-opacity="0"/></radialGradient></defs><circle cx="200" cy="200" r="300" fill="url(%23a)"/><circle cx="800" cy="800" r="200" fill="url(%23a)"/></svg>') no-repeat center center;
+            background-size: cover;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            color: white;
+            text-align: center;
+            animation: fadeInUp 1s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .profile-photo {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 6px solid rgba(255, 255, 255, 0.3);
+            margin-bottom: 2rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            transition: all 0.5s ease;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: white;
+            animation: profileFloat 6s ease-in-out infinite;
+        }
+
+        .profile-photo:hover {
+            transform: scale(1.1);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+            border-color: rgba(255, 255, 255, 0.6);
+        }
+
+        .profile-photo img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            transition: all 0.3s ease;
+        }
+
+        .profile-photo img:hover {
+            transform: scale(1.05);
+        }
+
+        @keyframes profileFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            25% { transform: translateY(-10px) rotate(1deg); }
+            50% { transform: translateY(-20px) rotate(0deg); }
+            75% { transform: translateY(-10px) rotate(-1deg); }
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .hero .subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 12px 30px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .cta-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        /* Sections */
+        .section {
+            padding: 100px 0;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section:nth-child(even) {
+            background: var(--light);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            position: relative;
+            color: var(--dark);
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: var(--gradient);
+            border-radius: 2px;
+        }
+
+        /* Contact Info */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .contact-item {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .contact-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .contact-item a {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .contact-item a:hover {
+            color: var(--primary);
+        }
+
+        .contact-item i {
+            font-size: 2.5rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+        }
+
+        .card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .card .meta {
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        /* Skills */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .skill-category {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .skill-category:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .skill-category h4 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .skill-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .skill-bar {
+            width: 70%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .skill-progress {
+            height: 100%;
+            background: var(--gradient);
+            border-radius: 4px;
+            width: 0;
+            transition: width 2s ease;
+        }
+
+        /* Awards */
+        .awards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .award-item {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .award-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .award-icon {
+            font-size: 3rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        /* Floating Elements */
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .profile-photo {
+                width: 150px;
+                height: 150px;
+                font-size: 3rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero .subtitle {
+                font-size: 1.2rem;
+            }
+
+            .section {
+                padding: 60px 0;
+            }
+
+            .contact-grid,
+            .skills-grid,
+            .awards-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Interactive elements */
+        .interactive-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            background: var(--gradient-accent);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin: 4px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .interactive-badge:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Scroll indicator */
+        .scroll-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: var(--gradient);
+            z-index: 1001;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="scroll-indicator" id="scrollIndicator"></div>
+
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="logo">Portfolio</div>
+            <ul class="nav-links">
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="#summary">Summary</a></li>
+                <li><a href="#experience">Experience</a></li>
+                <li><a href="#education">Education</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#awards">Awards</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="profile-photo" id="profilePhoto">
+                    <!-- <i class="fas fa-user"></i> -->
+                    <!-- Replace the icon with your actual photo by uncommenting the line below and adding your image URL -->
+                    <img src="C:\Users\abhis\OneDrive\Pictures\Photo.png" alt="Photo">
+                </div>
+                <h1 class="floating">Abhishek Singh</h1>
+                <p class="subtitle">Power BI Developer</p>
+                <a href="#contact" class="cta-button">Get In Touch</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="section">
+        <div class="container">
+            <h2 class="section-title">Contact Information</h2>
+            <div class="contact-grid">
+                <div class="contact-item">
+                    <a href="mailto:abhishek23500@outlook.com">
+                        <i class="fas fa-envelope"></i>
+                        <h3>Email</h3>
+                        <p>abhishek23500@outlook.com</p>
+                    </a>
+                </div>
+                <div class="contact-item">
+                    <a href="tel:+917021053781">
+                        <i class="fas fa-phone"></i>
+                        <h3>Phone</h3>
+                        <p>+917021053781</p>
+                    </a>
+                </div>
+                <div class="contact-item">
+                    <a href="https://maps.app.goo.gl/KD7278yjdLi9vRkh7" target="_blank">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <h3>Location</h3>
+                        <p>Sydney, AU</p>
+                    </a>
+                </div>
+                <div class="contact-item">
+                    <a href="https://www.linkedin.com/in/abhishek23500/" target="_blank">
+                        <i class="fab fa-linkedin"></i>
+                        <h3>LinkedIn</h3>
+                        <p>linkedin.com/in/johndoe</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="summary" class="section">
+        <div class="container">
+            <h2 class="section-title">Professional Summary</h2>
+            <div class="card">
+                <p style="font-size: 1.1rem; line-height: 1.8;">
+                    Experienced IT Professional with expertise in leading cross-functional teams through the full lifecycle of BI projects. 
+                    Skilled in leveraging Power BI to develop dynamic, data-driven dashboards and reports, providing key insights to stakeholders. 
+                    Proficient in gathering business requirements, analyzing data, and creating visualizations that drive decision-making. 
+                    Adept at implementing project management methodologies, managing risks, and ensuring timely delivery while maintaining clear communication with stakeholders. 
+                    Strong problem-solving abilities and experience in managing multiple priorities in fast-paced environments.
+                </p>
+                <div style="margin-top: 2rem;">
+                    <h4 style="color: var(--primary); margin-bottom: 1rem;">Work Authorization</h4>
+                    <div class="interactive-badge">Skilled Visa Holder</div>
+                    <div class="interactive-badge">Authorized to work in the Australia</div>
+                    <div class="interactive-badge">Valid until 2028</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="experience" class="section">
+        <div class="container">
+            <h2 class="section-title">Work Experience</h2>
+            
+            <div class="card">
+                <h3>Power BI Developer</h3>
+                <div class="meta">
+                    <i class="fas fa-building"></i> Infosys Limited. | 
+                    <i class="fas fa-calendar"></i> 2023 - Present | 
+                    <!-- <i class="fas fa-map-marker-alt"></i> New York, NY -->
+                </div>
+                <p>Designs and develops end-to-end Power BI solutions, focusing on data modelling, DAX, and dashboard performance. Integrates data from SQL, Excel, and cloud sources to deliver accurate, actionable insights. Collaborates with stakeholders to translate business needs into interactive reports, with added AI-driven forecasting using Azure Cognitive Services.</p>
+                <div style="margin-top: 1rem;">
+                    <div class="interactive-badge">Power BI Services</div>
+                    <div class="interactive-badge">Data Analysis</div>
+                    <div class="interactive-badge">AWS</div>
+                    <div class="interactive-badge">SQL</div>
+                    <div class="interactive-badge">DAX</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Network Engineer</h3>
+                <div class="meta">
+                    <i class="fas fa-building"></i> Infosys Limited | 
+                    <i class="fas fa-calendar"></i> 2021 - 2022 | 
+                    <!-- <i class="fas fa-map-marker-alt"></i> San Francisco, CA -->
+                </div>
+                <p>Network Engineer with 3+ years of experience in designing, implementing, and managing network infrastructure. Skilled in troubleshooting, monitoring, and optimizing network performance to ensure secure and reliable connectivity.</p>
+                <div style="margin-top: 1rem;">
+                    <div class="interactive-badge">Network Advancement</div>
+                    <div class="interactive-badge">Linux</div>
+                    <div class="interactive-badge">AWS</div>
+                    <div class="interactive-badge">Network Planning</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="education" class="section">
+        <div class="container">
+            <h2 class="section-title">Education</h2>
+            
+            <div class="card">
+                <h3>Master of Business Administration</h3>
+                <div class="meta">
+                    <i class="fas fa-university"></i> Narsee Monjee Institute of Management Studies | 
+                    <i class="fas fa-calendar"></i> 2022 - 2024 | 
+                    <i class="fas fa-map-marker-alt"></i> India 
+                </div>
+                <p>Expertise in aligning IT solutions with business objectives, optimizing service delivery, and driving digital transformation through effective IT strategy and management.</p>
+            </div>
+
+            <div class="card">
+                <h3>Bachelor of Science in Computer Science</h3>
+                <div class="meta">
+                    <i class="fas fa-university"></i> University Of Mumbai | 
+                    <i class="fas fa-calendar"></i> 2018 - 2021 | 
+                    <i class="fas fa-map-marker-alt"></i> India
+                </div>
+                <p>Strong foundation in programming, databases, and software development, along with problem-solving and analytical skills to support technology-driven solutions.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="certifications" class="section">
+        <div class="container">
+            <h2 class="section-title">Certifications</h2>
+            <div class="contact-grid">
+                <!-- <div class="contact-item">
+                    <a href="https://aws.amazon.com/certification/certified-solutions-architect-professional/" target="_blank">
+                        <i class="fab fa-aws"></i>
+                        <h3>AWS Certified Solutions Architect</h3>
+                        <p>Professional Level | 2023</p>
+                    </a>
+                </div> -->
+
+                <div class="contact-item">
+                    <a href="https://learn.microsoft.com/api/credentials/share/en-in/AbhishekSingh-3595/CCB5FE27D4BECB3A?sharingId=4E37676FB35F6C1E" target="_blank">
+                        <!-- <i class="fab fa-google"></i> -->
+                        <i class="fab fa-microsoft"></i>
+                        <h3>Microsoft Certified: Power BI Data Analyst Associate</h3>
+                        <p>Microsoft | 2025</p>
+                    </a>
+                </div>
+                
+                <div class="contact-item">
+                    <a href="https://learn.microsoft.com/api/credentials/share/en-in/AbhishekSingh-3595/17B56BEE99659186?sharingId=4E37676FB35F6C1E" target="_blank">
+                        <!-- <i class="fab fa-google"></i> -->
+                        <i class="fab fa-microsoft"></i>
+                        <h3>Microsoft Certified: Azure AI Fundamentals</h3>
+                        <p>Microsoft | 2025</p>
+                    </a>
+                </div>
+
+                <div class="contact-item">
+                    <a href="https://skillshop.credential.net/4f443b19-9d02-44b0-b9f9-a8b073e9dc76" target="_blank">
+                        <i class="fab fa-google"></i>
+                        <h3>Google Analytics Certification</h3>
+                        <p>Google | 2025</p>
+                    </a>
+                </div>
+
+                <div class="contact-item">
+                    <a href="https://skillshop.credential.net/4f443b19-9d02-44b0-b9f9-a8b073e9dc76" target="_blank">
+                        <i class="fas fa-leaf"></i>
+                        <h3>MongoDB SI Associate</h3>
+                        <p>MongoDB | 2025</p>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" class="section">
+        <div class="container">
+            <h2 class="section-title">Skills</h2>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h4><i class="fas fa-code"></i> Technical</h4>
+                    <div class="skill-item">
+                        <span>HTML</span>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="90%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <span>Power BI Services</span>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="90%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <span>Power Apps</span>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="80%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <div class="skill-category">
+                    <h4><i class="fas fa-server"></i> Backend</h4>
+                    <div class="skill-item">
+                        <span>Node.js</span>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="90%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <span>Python</span>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="85%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <span>Java</span>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="80%"></div>
+                        </div>
+                    </div>
+                </div> -->
+
+                <div class="skill-category">
+                    <h4><i class="fas fa-cloud"></i> Cloud & DevOps</h4>
+                    <div class="skill-item">
+                        <span>AWS</span>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="90%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <span>Docker</span>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="85%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <span>Kubernetes</span>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="75%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="skill-category">
+                    <h4><i class="fas fa-database"></i> Databases</h4>
+                    <div class="skill-item">
+                        <span>MongoDB</span>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="70%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <span>SQL</span>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="80%"></div>
+                        </div>
+                    </div>
+                    <!-- <div class="skill-item">
+                        <span>Redis</span>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="80%"></div>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="awards" class="section">
+        <div class="container">
+            <h2 class="section-title">Awards & Recognition</h2>
+            <div class="awards-grid">
+                <div class="award-item">
+                    <div class="award-icon">🏆</div>
+                    <h3>Delivery Ninja</h3>
+                    <p>Infosys | 2023</p>
+                    <p style="margin-top: 1rem; color: var(--text-light);">
+                        Recognized for outstanding contribution to product development and team leadership
+                    </p>
+                </div>
+                
+                <div class="award-item">
+                    <div class="award-icon">🥇</div>
+                    <h3>Tech Maestro</h3>
+                    <p>Infosys | 2024</p>
+                    <p style="margin-top: 1rem; color: var(--text-light);">
+                        Developed breakthrough optimization algorithm that improved system performance by 40%
+                    </p>
+                </div>
+                
+                <div class="award-item">
+                    <div class="award-icon">🏅</div>
+                    <h3>Best Team Award</h3>
+                    <p>Infosys | 2024</p>
+                    <p style="margin-top: 1rem; color: var(--text-light);">
+                        Awarded Best Team Award for exceptional collaboration and delivering high-impact results.
+                    </p>
+                </div>
+                
+                <div class="award-item">
+                    <div class="award-icon">💎</div>
+                    <h3>Platinum Clum Member</h3>
+                    <p>Infosys | 2025</p>
+                    <p style="margin-top: 1rem; color: var(--text-light);">
+                        Honored as a Platinum Club member at Infosys, an elite recognition for exceptional performance and contributions.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            });
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    
+                    // Animate skill bars when skills section is visible
+                    if (entry.target.id === 'skills') {
+                        setTimeout(() => {
+                            document.querySelectorAll('.skill-progress').forEach(bar => {
+                                bar.style.width = bar.dataset.width;
+                            });
+                        }, 500);
+                    }
+                }
+            });
+        }, observerOptions);
+
+        // Observe all sections
+        document.querySelectorAll('.section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Scroll indicator
+        window.addEventListener('scroll', () => {
+            const scrolled = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+            document.getElementById('scrollIndicator').style.width = scrolled + '%';
+        });
+
+        // Add click functionality for photo upload simulation
+        //document.getElementById('profilePhoto').addEventListener('click', function() {
+          //  alert('💡 Tip: Replace the placeholder icon with your professional photo!\n\nTo add your photo:\n1. Upload your image to an image hosting service\n2. Copy the image URL\n3. Uncomment the img tag in the HTML\n4. Replace "your-photo-url.jpg" with your actual image URL');
+        //});
+
+        // Add hover effects to interactive badges
+        document.querySelectorAll('.interactive-badge').forEach(badge => {
+            badge.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.1) rotate(2deg)';
+            });
+            
+            badge.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1) rotate(0deg)';
+            });
+        });
+
+        // Parallax effect for hero section
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallax = document.querySelector('.hero');
+            const speed = scrolled * 0.5;
+            parallax.style.transform = `translateY(${speed}px)`;
+        });
+
+        // Dynamic typing effect for hero title
+        function typeWriter(element, text, speed = 100) {
+            let i = 0;
+            element.innerHTML = '';
+            function typing() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(typing, speed);
+                }
+            }
+            typing();
+        }
+
+        // Initialize typing effect
+        window.addEventListener('load', () => {
+            const heroTitle = document.querySelector('.hero h1');
+            const originalText = heroTitle.textContent;
+            typeWriter(heroTitle, originalText, 150);
+        });
+
+        // Add click effects to cards
+        document.querySelectorAll('.card, .contact-item, .skill-category, .award-item').forEach(card => {
+            card.addEventListener('click', function() {
+                this.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 150);
+            });
+        });
+    </script>
+</body>
+</html>
